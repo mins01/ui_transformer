@@ -57,11 +57,11 @@ class Transformer{
     const rect = this.target.getBoundingClientRect();
     // this.container.style.top = rect.top+'px'
     // this.container.style.left = rect.left+'px'
-    this.container.style.setProperty('--top',rect.top+'px');
+    this.container.style.setProperty('--top',rect.top+(rect.height)+'px');
     this.container.style.setProperty('--left',rect.left+(rect.width-200)/2+'px');
     // this.container.style.width = rect.width+'px'
     // this.container.style.width = '200px'
-    this.container.style.height = rect.height+'px'
+    // this.container.style.height = rect.height+'px'
   }
   rSync(){
     if(!this.target){ return false }

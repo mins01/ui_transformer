@@ -39,7 +39,7 @@
   box-sizing: border-box;
   display: none;
   pointer-events: none;
-  top:clamp(50px,var(--top),calc(100vh - 50px ));
+  top:clamp(50px,var(--top),calc(100vh - 40px - 50px  ));
   left:clamp(20px,var(--left),calc(100vw - 220px ));
   
 }
@@ -70,7 +70,7 @@
 .tf-tool{
   max-width:200px;
   margin:0 auto;
-  margin-top: -40px;
+  margin-top: 10px;
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
