@@ -1,0 +1,118 @@
+@charset "utf-8";
+
+
+.tf-target{
+  --translate-x:0px;
+  --translate-y:0px;
+  --scale-x:1;
+  --scale-y:1;
+  --rotate:1;
+  --rotate-y:0;
+  --border:2px dashed #abc;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: translate(var(--translate-x,0) , var(--translate-y,0)) scale(var(--scale-x,0),var(--scale-y,0)) rotateY(var(--rotate-y,0)) rotate(var(--rotate,0))   ;
+  font-size: 14px;
+}
+/* .tf-tool{
+  transform: translate(var(--translate-x,0) , var(--translate-y,0)) ;
+} */
+
+
+.tf-target{
+  /* */
+}
+.tf-target.tf-on{
+  outline: 2px solid #abc;
+  outline: var(--border);
+  outline-offset: 2px;
+  cursor: move;
+}
+
+.tf-container{
+  --top:0;
+  --left:0;
+  --border:2px dotted #abc;
+  width:200px;
+  height:40px;
+  position: absolute;
+  box-sizing: border-box;
+  display: none;
+  pointer-events: none;
+  top:clamp(50px,var(--top),calc(100vh - 50px ));
+  left:clamp(20px,var(--left),calc(100vw - 220px ));
+  
+}
+
+.tf-container.tf-on{
+  display: block;
+}
+
+.tf-box{
+  /* border: 2px solid #abc; */
+  /* border:var(--border); */
+  outline: 2px solid #abc;
+  outline: var(--border);
+  outline-offset: 2px;
+  width:100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  align-content: stretch;
+  justify-content: space-between;
+  align-items: center;
+  justify-items: center;
+  cursor: move;
+  filter:opacity(0.8);
+}
+
+.tf-tool{
+  max-width:200px;
+  margin:0 auto;
+  margin-top: -40px;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+}
+.tf-btn-group{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.8;
+  box-shadow: 5px 5px 5px rgba(0,0,0,0.2);
+
+  border-radius: 0.3em;
+  flex:1 0 auto;
+
+}
+
+.tf-btn-group > .tf-btn{
+  flex:1 1 0;
+  border:2px solid #ccc;
+  border-right-width: 0;
+}
+
+.tf-btn-group > .tf-btn:first-child{
+  border-radius: 0.3em 0 0 0.3em;
+  
+}
+.tf-btn-group > .tf-btn:last-child{
+  border-radius: 0 0.3em 0.3em 0;
+  border-right-width: 2px;
+}
+
+.tf-btn{
+  cursor: pointer;
+  pointer-events: all;
+}
+.tf-btn:focus{
+  outline: 0px solid #000;
+}
