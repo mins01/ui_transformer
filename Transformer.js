@@ -1,16 +1,18 @@
 class Transformer{
-  init(container){
+  constructor() {
     this.debug = false;
 
     this._target = null;
-    this._container = null;
-    if(!this.container){
-      this.container = container;
-      this.initEvent();
-    }
-    
+    this._container = null;    
     this.pointerTarget = null;
-
+    // this.minScale = 0.2; // 20%
+    // this.maxScale = 3; // 300% 
+    this.minScale = null; //null 이면 무제한 축소
+    this.maxScale = null; //null 이면 무제한 확대
+    // this.minRotate = -180; 
+    // this.maxRotate = 180;
+    this.minRotate = null; 
+    this.maxRotate = null;
     
     this._tx = null;
     this._ty = null;
@@ -21,7 +23,12 @@ class Transformer{
     this._y0 = null;
     this._x1 = null;
     this._y1 = null;
-    
+  }
+  init(container){
+    if(!this.container){
+      this.container = container;
+      this.initEvent();
+    }
   }
   set target(target){
     if(this._target){
@@ -33,15 +40,22 @@ class Transformer{
       this.container.classList.add('tf-on');
       this._target.classList.add('tf-on') 
       this.container.dataset.targetNodeName = this._target.nodeName;
+      if(this._target.dataset.targetExtTools===undefined) { delete this.container.dataset.targetExtTools}
+      else{this.container.dataset.targetExtTools = this._target.dataset.targetExtTools}
     }else{
       this.container.classList.remove('tf-on');
       delete this.container.dataset.targetNodeName;
+      delete this.container.dataset.targetExtTools;
     }
     this.syncGuide();
     this.syncTool();
   }
   get target(){
     return this._target;
+  }
+  get targetArea(){
+    if(!this.target) return null;
+    return this.target.closest('.tf-target-area');
   }
   set container(container){
     this._container = container
@@ -78,17 +92,36 @@ class Transformer{
   }
 
   translate(x,y){
+    const targetArea = this.targetArea;
+    if(targetArea){
+      const tRect = this.target.getBoundingClientRect();
+      const taRect = targetArea.getBoundingClientRect();
+      // ! <text>인 경우 text-anchor 로인해서 위치가 틀어진다. <text> 자체로 사용하지 말고 <g><rect><text></g> 형식으로 묶어 서라.
+      x = Math.min(x,taRect.width - tRect.width/2);
+      x = Math.max(x,-1*tRect.width/2)
+      y = Math.min(y,taRect.height - tRect.height/2);
+      y = Math.max(y,-1*tRect.height/2)
+      
+    }
+    
+    
     if(this.debug) console.log('translate',x,y);
     this.target.style.setProperty('--translate-x',x+'px');
     this.target.style.setProperty('--translate-y',y+'px');
     this.syncGuide();
     this.syncTool();
   }
+  limitTanslate(){
+    
+  }
 
   scaleBy(scale){
     this.scaleTo(parseFloat(getComputedStyle(this.target).getPropertyValue('--scale-x'))+scale)
   }
   scaleTo(scale){
+    if(this.minScale !== null) scale = Math.max(scale,this.minScale);
+    if(this.maxScale !== null) scale = Math.min(scale,this.maxScale);
+    
     this.target.style.setProperty('--scale-x',scale);
     this.target.style.setProperty('--scale-y',scale);
     this.syncGuide();
@@ -103,6 +136,9 @@ class Transformer{
     this.rotateTo(parseInt(getComputedStyle(this.target).getPropertyValue('--rotate'))+rotate)
   }
   rotateTo(rotate){    
+    if(this.minRotate !== null) rotate = Math.max(rotate,this.minRotate);
+    if(this.maxRotate !== null) rotate = Math.min(rotate,this.maxRotate);
+
     this.target.style.setProperty('--rotate',rotate+'deg');
     this.syncGuide();
     // this.syncTool();

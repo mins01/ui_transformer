@@ -44,9 +44,9 @@
 		let tf01 = null;
 		window.addEventListener('load',(event)=>{
 			tf01  = new Transformer();
-			tf01.debug = true;
 			tf01.init(document.querySelector('#tf01'));
 			tf01.initAutoSet();
+			tf01.debug = true;
 			// tf01.target = document.querySelector('#tfTarget');
 		})
 	</script>
@@ -59,15 +59,16 @@
 			</div>
 			<div class="tf-target" style="position: absolute;width:100px;height: 200px; background-color: #aaf; --rotate:0deg ">2
 			</div>
-			<div class="tf-target" style="position: absolute;width:500px;height: 300px; background-color: #fcc; --rotate:45deg; --translate-y:600px ">3
+			<div class="tf-target" style="position: absolute;width:500px;height: 300px; background-color: #fcc; --rotate:45deg; --translate-y:900px ">3
 			</div>
 			<div class="tf-target" style="position: absolute;width:200px;height: 200px; background-color: #c9f; --rotate:180deg;  ">4
 			</div>
 		</div>
 		<hr>
-		<div style="display: inline-block; border:4px solid #000">
+		<!-- tf-target-area 가 설정 되면 그 안에서만 이동되면 밖으로 나갈 수 없다.-->
+		<div >
 
-			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="300" height="300" fill="gray">
+			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="300" height="300" fill="gray" x="0" y="0" viewBox="0 0 300 300" class="tf-target-area" style="border:1px solid #000; box-sizing:content-box">
 				<style>
 					.tf-target{
 						--translate-x:0px;
@@ -95,7 +96,7 @@
 				<rect  x="50" y="50" width="50" height="50" fill="red" stroke="blue" transform="rotate(-10, 50, 100)"></rect>
 				<text x="50" y="50" fill="red" stroke="blue" stroke-width="2" style="font-size:30px;font-weight:bold">테스트값</text>
 				<g id="g100">
-					<text x="50" y="50" fill="red" stroke="blue" stroke-width="2" style="font-size: 30px; font-weight: bold;">테스트값</text>
+					<text x="0" y="0" dy="1em" fill="red" stroke="blue" alignment-baseline="text-top" stroke-width="2" style="font-size: 30px; font-weight: bold;">테스트값</text>
 				</g>
 				<use xlink:href="#g100" href="#g100" class="tf-target" >
 				</use>
@@ -104,10 +105,21 @@
 				</g>
 				<use xlink:href="#g-asset-02" href="#g-asset-02" class="tf-target" style="--translate-x:100px; --translate-y:150px; --rotate:30deg">
 				</use>
-				<text y="20" text-anchor="middle" class="tf-target" id="svg-text" style="--translate-x:100px; --translate-y:150px; --rotate:30deg">
-					<tspan x="0" dy="1.6em"  id="svg-text-01">text를 선택하면 정렬이 표기됩니다.</tspan>
-					<tspan x="0" dy="1.6em"  id="svg-text-02">테스트</tspan>
+				<text dy="20" text-anchor="middle" class="tf-target" id="svg-text" style="--translate-x:100px; --translate-y:150px; --rotate:30deg" data-target-ext-tools="text-anchor">
+					<tspan >text를 선택하면 정렬이 표기됩니다.</tspan>
+					<tspan  >테스트</tspan>
 				</text>
+				<g class="tf-target"  style="--translate-x:100px; --translate-y:150px; --rotate:30deg" data-target-ext-tools="text-anchor">
+					<rect x="0" y="0" width="200px" height="40" fill="#eee"></rect>
+					<text x="0" y="0" dx="1em" dy="1em" text-anchor="start" >
+						<tspan x="0" y="0" dx="1em" dy="1em"  id="svg-text-01">text를 선택하면 정렬이 표기됩니다.</tspan>
+						<tspan x="0" y="0" dx="1em" dy="2em"  id="svg-text-02">테스트</tspan>
+					</text>
+				</g>
+				<text x="20" y="35" class="small">My</text>
+				<text x="40" y="35" class="heavy">cat</text>
+				<text x="55" y="55" class="small">is</text>
+				<text x="65" y="55" class="Rrrrr">Grumpy!</text>
 			</svg>	
 		</div>
 	</div>
@@ -132,7 +144,8 @@
 				<button class="tf-btn tf-btn-transform" title="뒤로"  data-order="1">↧</button>
 				<button class="tf-btn tf-btn-transform" title="앞으로"  data-order="-1">↥</button>
 			</div>
-			<div class="tf-btn-group tf-btn-group-text">
+			<!-- 사용시 주의 tf-target-area의 위치 제한 계산 어렵네-->
+			<div class="tf-btn-group tf-btn-group-ext tf-btn-group-text-anchor">
 				<button class="tf-btn tf-btn-transform" title="왼쪽 정렬" data-text-anchor="start">왼쪽</button>
 				<button class="tf-btn tf-btn-transform" title="가운데 정렬" data-text-anchor="middle" >가운데</button>
 				<button class="tf-btn tf-btn-transform" title="오른쪽 정렬" data-text-anchor="end" >오른쪽</button>

@@ -120,5 +120,5 @@
 /* .tf-btn-group-roate{}
 .tf-btn-group-scale{}
 .tf-btn-group-order{} */
-.tf-btn-group-text{ display: none;}
-.tf-container[data-target-node-name="text"] .tf-btn-group-text{ display: flex;}
+.tf-btn-group-ext{ display: none;}
+.tf-container[data-target-ext-tools~="text-anchor"] .tf-btn-group-text-anchor{ display: flex;}
