@@ -32,8 +32,10 @@ class Transformer{
     if(this._target){
       this.container.classList.add('tf-on');
       this._target.classList.add('tf-on') 
+      this.container.dataset.targetNodeName = this._target.nodeName;
     }else{
       this.container.classList.remove('tf-on');
+      delete this.container.dataset.targetNodeName;
     }
     this.syncGuide();
     this.syncTool();
@@ -125,10 +127,14 @@ class Transformer{
       let prev = target.previousElementSibling;
       if(prev) target.parentNode.insertBefore(target,prev);
     }
-    
-
   }
 
+  // svg <text>용
+  textAnchor(textAnchor){
+    this.target.setAttribute('text-anchor',textAnchor)
+    this.syncGuide();
+  }
+  
   stopevent(event){
 		if(this.debug) console.log(event.type);
 		event.preventDefault(); 
@@ -197,7 +203,10 @@ class Transformer{
         if(target.dataset.order !== undefined){
           this.order(parseFloat(target.dataset.order));
         }
-
+        if(target.dataset.textAnchor !== undefined){
+          console.log(target.dataset.textAnchor);
+          this.textAnchor(target.dataset.textAnchor);
+        }
       }
       return false;
 
