@@ -54,7 +54,7 @@
 <body>
 	<div class="container">
     <h1>UI Transformer</h1>
-    <div style="position: absolute;">
+    <div class="tf-target-container" style="position: absolute;">
 			<div id="tfTarget" class="tf-target" style="position: absolute;width:200px;height: 200px; background-color: #eee; --rotate:15deg ">1
 			</div>
 			<div class="tf-target" style="position: absolute;width:100px;height: 200px; background-color: #aaf; --rotate:0deg ">2
@@ -72,15 +72,19 @@
 		</div>
 		<div class="tf-tool">
 			<div class="tf-btn-group">
-				<button class="tf-btn tf-btn-transform"  data-rotate-by="-15">↶</button>
-				<button class="tf-btn tf-btn-transform"  data-rotate-to="0">0°</button>
-				<button class="tf-btn tf-btn-transform"  data-rotate-y-toggle="1">◫</button>
-				<button class="tf-btn tf-btn-transform"  data-rotate-by="15">↷</button>
+				<button class="tf-btn tf-btn-transform" title="회전 -15°"  data-rotate-by="-15">↶</button>
+				<button class="tf-btn tf-btn-transform" title="회전 초기화"  data-rotate-to="0">0°</button>
+				<button class="tf-btn tf-btn-transform" title="좌우반전"  data-rotate-y-toggle="1">◫</button>
+				<button class="tf-btn tf-btn-transform" title="회전 +15°"  data-rotate-by="15">↷</button>
 			</div>
 			<div class="tf-btn-group">
-				<button class="tf-btn tf-btn-transform"  data-scale-by="-0.1">－</button>
-				<button class="tf-btn tf-btn-transform"  data-scale-to="1">1:1</button>
-				<button class="tf-btn tf-btn-transform"  data-scale-by="0.1">＋</button>
+				<button class="tf-btn tf-btn-transform" title=""  data-scale-by="-0.1">－</button>
+				<button class="tf-btn tf-btn-transform" title=""  data-scale-to="1">1:1</button>
+				<button class="tf-btn tf-btn-transform" title=""  data-scale-by="0.1">＋</button>
+			</div>
+			<div class="tf-btn-group">
+				<button class="tf-btn tf-btn-transform" title=""  data-order="1">↧</button>
+				<button class="tf-btn tf-btn-transform" title=""  data-order="-1">↥</button>
 			</div>
 			
 		</div>

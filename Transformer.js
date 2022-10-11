@@ -47,9 +47,9 @@ class Transformer{
   get container(){
     return this._container;
   }
-  get box(){
-    return this.target;
-  }
+  // get box(){
+  //   return this.target;
+  // }
   get tool(){
     return this._container.querySelector('.tf-tool');
   }
@@ -77,45 +77,56 @@ class Transformer{
 
   translate(x,y){
     if(this.debug) console.log('translate',x,y);
-    this.box.style.setProperty('--translate-x',x+'px');
-    this.box.style.setProperty('--translate-y',y+'px');
+    this.target.style.setProperty('--translate-x',x+'px');
+    this.target.style.setProperty('--translate-y',y+'px');
     this.syncGuide();
     this.syncTool();
   }
 
   scaleBy(scale){
-    this.scaleTo(parseFloat(getComputedStyle(this.box).getPropertyValue('--scale-x'))+scale)
+    this.scaleTo(parseFloat(getComputedStyle(this.target).getPropertyValue('--scale-x'))+scale)
   }
   scaleTo(scale){
-    this.box.style.setProperty('--scale-x',scale);
-    this.box.style.setProperty('--scale-y',scale);
+    this.target.style.setProperty('--scale-x',scale);
+    this.target.style.setProperty('--scale-y',scale);
     this.syncGuide();
     // this.syncTool();
   }
 
   rotateBy(rotate){
-    const v = getComputedStyle(this.box).getPropertyValue('--rotate-y');
+    const v = getComputedStyle(this.target).getPropertyValue('--rotate-y');
     if(v =='180deg'){
       rotate *= -1;
     }
-    this.rotateTo(parseInt(getComputedStyle(this.box).getPropertyValue('--rotate'))+rotate)
+    this.rotateTo(parseInt(getComputedStyle(this.target).getPropertyValue('--rotate'))+rotate)
   }
-  rotateTo(rotate){
-
-    
-    this.box.style.setProperty('--rotate',rotate+'deg');
+  rotateTo(rotate){    
+    this.target.style.setProperty('--rotate',rotate+'deg');
     this.syncGuide();
     // this.syncTool();
   }
   rotateYToggle(){
-    const v = getComputedStyle(this.box).getPropertyValue('--rotate-y');
+    const v = getComputedStyle(this.target).getPropertyValue('--rotate-y');
     if(v =='180deg'){
-      this.box.style.setProperty('--rotate-y','0');
+      this.target.style.setProperty('--rotate-y','0');
     }else{
-      this.box.style.setProperty('--rotate-y','180deg');
+      this.target.style.setProperty('--rotate-y','180deg');
     }
     this.syncGuide();
     // this.syncTool();
+  }
+  order(order){
+    const target = this.target;
+    console.log(order);
+    if(order < 0){
+      let next = target.nextElementSibling;
+      if(next) target.parentNode.insertBefore(next,target);
+    }else{
+      let prev = target.previousElementSibling;
+      if(prev) target.parentNode.insertBefore(target,prev);
+    }
+    
+
   }
 
   stopevent(event){
@@ -183,6 +194,10 @@ class Transformer{
         if(target.dataset.scaleBy !== undefined){
           this.scaleBy(parseFloat(target.dataset.scaleBy));
         }
+        if(target.dataset.order !== undefined){
+          this.order(parseFloat(target.dataset.order));
+        }
+
       }
       return false;
 
