@@ -35,7 +35,8 @@ class Transformer{
     }else{
       this.container.classList.remove('tf-on');
     }
-    this.sync();
+    this.syncGuide();
+    this.syncTool();
   }
   get target(){
     return this._target;
@@ -52,28 +53,34 @@ class Transformer{
   get tool(){
     return this._container.querySelector('.tf-tool');
   }
-  sync(){
+  get guide(){
+    return this._container.querySelector('.tf-guide');
+  }
+  syncTool(){
     if(!this.target){ return false }
     const rect = this.target.getBoundingClientRect();
-    // this.container.style.top = rect.top+'px'
-    // this.container.style.left = rect.left+'px'
-    this.container.style.setProperty('--top',rect.top+(rect.height)+'px');
-    this.container.style.setProperty('--left',rect.left+(rect.width-200)/2+'px');
-    // this.container.style.width = rect.width+'px'
-    // this.container.style.width = '200px'
-    // this.container.style.height = rect.height+'px'
+    const tool = this.tool;
+    tool.style.setProperty('--top',rect.top+(rect.height)+'px');
+    tool.style.setProperty('--left',rect.left+(rect.width-200)/2+'px');
   }
-  rSync(){
+  syncGuide(){
     if(!this.target){ return false }
+    const rect = this.target.getBoundingClientRect();
+    const guide = this.guide;
+    guide.style.setProperty('top',rect.top+'px');
+    guide.style.setProperty('left',rect.left+'px');
+    guide.style.setProperty('width',rect.width+'px');
+    guide.style.setProperty('height',rect.height+'px');
 
+    
   }
 
   translate(x,y){
     if(this.debug) console.log('translate',x,y);
     this.box.style.setProperty('--translate-x',x+'px');
     this.box.style.setProperty('--translate-y',y+'px');
-    this.rSync();
-    this.sync();
+    this.syncGuide();
+    this.syncTool();
   }
 
   scaleBy(scale){
@@ -82,8 +89,8 @@ class Transformer{
   scaleTo(scale){
     this.box.style.setProperty('--scale-x',scale);
     this.box.style.setProperty('--scale-y',scale);
-    this.rSync();
-    // this.sync();
+    this.syncGuide();
+    // this.syncTool();
   }
 
   rotateBy(rotate){
@@ -97,8 +104,8 @@ class Transformer{
 
     
     this.box.style.setProperty('--rotate',rotate+'deg');
-    this.rSync();
-    // this.sync();
+    this.syncGuide();
+    // this.syncTool();
   }
   rotateYToggle(){
     const v = getComputedStyle(this.box).getPropertyValue('--rotate-y');
@@ -107,8 +114,8 @@ class Transformer{
     }else{
       this.box.style.setProperty('--rotate-y','180deg');
     }
-    this.rSync();
-    // this.sync();
+    this.syncGuide();
+    // this.syncTool();
   }
 
   stopevent(event){
@@ -119,22 +126,25 @@ class Transformer{
 	}
 
   initEvent(){
-    document.onpointerup = (event)=>{ 
-      this.pointerTarget = null;
-      this.stopevent(event);
-      this.rSync();
-      return false;
-    };
+    document.addEventListener('scroll',(event)=>{ 
+      this.syncGuide();
+      this.syncTool();
+    });
 
-    document.onpointermove = (event)=>{ 
+    document.addEventListener('pointerup',(event)=>{ 
+      this.pointerTarget = null;
+      this.syncGuide();
+    });
+
+    document.addEventListener('pointermove', (event)=>{ 
       if(!this.pointerTarget){ return false; }
       this.stopevent(event);
       let x = event.x - this._x0;
       let y = event.y - this._y0;
       if(this.debug) console.log(this.pointerTarget.dataset.transform);
       this.translate(this._tx+x,this._ty+y);
-      this.rSync();
-    };
+      this.syncGuide();
+    });
     window.addEventListener('touchstart',(event)=> {
       if(this.pointerTarget){ this.stopevent(event); return false; }
     }, {passive:false});

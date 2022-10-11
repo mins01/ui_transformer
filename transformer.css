@@ -23,9 +23,9 @@
   /* */
 }
 .tf-target.tf-on{
-  outline: 2px solid #abc;
+  /* outline: 2px solid #abc;
   outline: var(--border);
-  outline-offset: 2px;
+  outline-offset: 2px; */
   cursor: move;
 }
 
@@ -35,7 +35,7 @@
   --border:2px dotted #abc;
   width:200px;
   height:40px;
-  position: absolute;
+  /* position: absolute; */
   box-sizing: border-box;
   display: none;
   pointer-events: none;
@@ -48,26 +48,24 @@
   display: block;
 }
 
-.tf-box{
+.tf-guide{
   /* border: 2px solid #abc; */
   /* border:var(--border); */
   outline: 2px solid #abc;
   outline: var(--border);
   outline-offset: 2px;
-  width:100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  align-content: stretch;
-  justify-content: space-between;
-  align-items: center;
-  justify-items: center;
-  cursor: move;
-  filter:opacity(0.8);
+  width: 100px;
+  height: 100px;
+  position: fixed;
 }
 
 .tf-tool{
+  --top:0;
+  --left:0;
+  top:clamp(50px,var(--top),calc(100vh - 40px - 50px  ));
+  left:clamp(20px,var(--left),calc(100vw - 220px ));
+  position: fixed;
+
   max-width:200px;
   margin:0 auto;
   margin-top: 10px;
