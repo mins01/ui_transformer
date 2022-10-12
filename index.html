@@ -133,15 +133,21 @@
 		</div>
 		<div class="tf-tool">
 			<div class="tf-btn-group tf-btn-group-roate">
-				<button class="tf-btn tf-btn-transform" title="회전 -15°"  data-rotate-by="-15">↶</button>
+				<button class="tf-btn tf-btn-transform" title="회전 -15°"  data-rotate-by="-15">⟲</button>
 				<button class="tf-btn tf-btn-transform" title="회전 초기화"  data-rotate-to="0">0°</button>
+				<button class="tf-btn tf-btn-transform" title="회전 +15°"  data-rotate-by="15">⟳</button>
 				<button class="tf-btn tf-btn-transform" title="좌우반전"  data-rotate-y-toggle="1">◫</button>
-				<button class="tf-btn tf-btn-transform" title="회전 +15°"  data-rotate-by="15">↷</button>
 			</div>
 			<div class="tf-btn-group tf-btn-group-scale">
 				<button class="tf-btn tf-btn-transform" title="축소"  data-scale-by="-0.1">－</button>
 				<button class="tf-btn tf-btn-transform" title="1:1"  data-scale-to="1">1:1</button>
-				<button class="tf-btn tf-btn-transform" title="확디"  data-scale-by="0.1">＋</button>
+				<button class="tf-btn tf-btn-transform" title="확대"  data-scale-by="0.1">＋</button>
+			</div>
+			
+			<div class="tf-btn-group tf-btn-group-order">
+				<button class="tf-btn tf-btn-transform" title="리셋"  data-translate-center="1" data-scale-to="1" data-rotate-to="0">🗘</button>
+				<!-- <button class="tf-btn tf-btn-transform" title="삭제"  data-remove="1" onclick="if(!confirm('삭제할까요?')) return false;">⦻</button> -->
+				<button class="tf-btn " title="삭제"   onclick="if(confirm('삭제할까요?')){tf01.remove();}">⨂</button>
 			</div>
 			<div class="tf-btn-group tf-btn-group-order">
 				<button class="tf-btn tf-btn-transform" title="뒤로"  data-order="1">↧</button>

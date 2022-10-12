@@ -90,13 +90,38 @@ class Transformer{
 
     
   }
-
-  translate(x,y){
+  translateCenter(translateCenter){
     const targetArea = this.targetArea;
     if(targetArea){
-      const tRect = this.target.getBoundingClientRect();
-      const taRect = targetArea.getBoundingClientRect();
+      let tRect , taRect;
+      taRect = targetArea.getBoundingClientRect();
+      if(this.target.getBBox ){
+        tRect = this.target.getBBox();
+      }else{
+        tRect = this.target.getBoundingClientRect();
+      }
+      let x = (taRect.width-tRect.width)/2;
+      let y = (taRect.height-tRect.height)/2;
+      this.target.style.setProperty('--translate-x',x+'px');
+      this.target.style.setProperty('--translate-y',y+'px');
+      this.syncGuide();
+      this.syncTool();
+    }
+
+  }
+  translate(x,y){
+    if(!this.target){return false;}
+    const targetArea = this.targetArea;
+    if(targetArea){
+      let tRect , taRect;
+      taRect = targetArea.getBoundingClientRect();
+      if(this.target.getBBox ){
+        tRect = this.target.getBBox();
+      }else{
+        tRect = this.target.getBoundingClientRect();
+      }
       // ! <text>인 경우 text-anchor 로인해서 위치가 틀어진다. <text> 자체로 사용하지 말고 <g><rect><text></g> 형식으로 묶어 서라.
+      // console.log(taRect.width,tRect.width)
       x = Math.min(x,taRect.width - tRect.width/2);
       x = Math.max(x,-1*tRect.width/2)
       y = Math.min(y,taRect.height - tRect.height/2);
@@ -111,14 +136,19 @@ class Transformer{
     this.syncGuide();
     this.syncTool();
   }
-  limitTanslate(){
-    
+
+  remove(remove){
+    if(!this.target){return false;}
+    this.target.remove();
+    this.target = null;
   }
 
   scaleBy(scale){
+    if(!this.target){return false;}
     this.scaleTo(parseFloat(getComputedStyle(this.target).getPropertyValue('--scale-x'))+scale)
   }
   scaleTo(scale){
+    if(!this.target){return false;}
     if(this.minScale !== null) scale = Math.max(scale,this.minScale);
     if(this.maxScale !== null) scale = Math.min(scale,this.maxScale);
     
@@ -129,13 +159,15 @@ class Transformer{
   }
 
   rotateBy(rotate){
+    if(!this.target){return false;}
     const v = getComputedStyle(this.target).getPropertyValue('--rotate-y');
     if(v =='180deg'){
       rotate *= -1;
     }
     this.rotateTo(parseInt(getComputedStyle(this.target).getPropertyValue('--rotate'))+rotate)
   }
-  rotateTo(rotate){    
+  rotateTo(rotate){
+    if(!this.target){return false;}
     if(this.minRotate !== null) rotate = Math.max(rotate,this.minRotate);
     if(this.maxRotate !== null) rotate = Math.min(rotate,this.maxRotate);
 
@@ -144,6 +176,7 @@ class Transformer{
     // this.syncTool();
   }
   rotateYToggle(){
+    if(!this.target){return false;}
     const v = getComputedStyle(this.target).getPropertyValue('--rotate-y');
     if(v =='180deg'){
       this.target.style.setProperty('--rotate-y','0');
@@ -154,6 +187,7 @@ class Transformer{
     // this.syncTool();
   }
   order(order){
+    if(!this.target){return false;}
     const target = this.target;
     console.log(order);
     if(order < 0){
@@ -170,6 +204,7 @@ class Transformer{
       if(prev) target.parentNode.insertBefore(target,prev);
     }
   }
+
 
   // svg <text>용
   textAnchor(textAnchor){
@@ -246,8 +281,13 @@ class Transformer{
           this.order(parseFloat(target.dataset.order));
         }
         if(target.dataset.textAnchor !== undefined){
-          console.log(target.dataset.textAnchor);
           this.textAnchor(target.dataset.textAnchor);
+        }
+        if(target.dataset.translateCenter !== undefined){
+          this.translateCenter(target.dataset.translateCenter);
+        }
+        if(target.dataset.remove !== undefined){
+          this.remove(target.dataset.remove);
         }
       }
       return false;
