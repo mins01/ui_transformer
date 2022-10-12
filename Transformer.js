@@ -158,9 +158,15 @@ class Transformer{
     console.log(order);
     if(order < 0){
       let next = target.nextElementSibling;
+      while(next && !next.classList.contains('tf-target')){
+        next = next.nextElementSibling;
+      }
       if(next) target.parentNode.insertBefore(next,target);
     }else{
       let prev = target.previousElementSibling;
+      while(prev && !prev.classList.contains('tf-target')){
+        prev = prev.previousElementSibling;
+      }
       if(prev) target.parentNode.insertBefore(target,prev);
     }
   }
