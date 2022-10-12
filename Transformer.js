@@ -76,8 +76,9 @@ class Transformer{
     if(!this.target){ return false }
     const rect = this.target.getBoundingClientRect();
     const tool = this.tool;
+    const toolRect = this.tool.getBoundingClientRect();
     tool.style.setProperty('--top',rect.top+(rect.height)+'px');
-    tool.style.setProperty('--left',rect.left+(rect.width-200)/2+'px');
+    tool.style.setProperty('--left',rect.left+(rect.width-toolRect.width)/2+'px');
   }
   syncGuide(){
     if(!this.target){ return false }
