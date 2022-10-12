@@ -90,7 +90,8 @@ class Transformer{
 
     
   }
-  translateCenter(translateCenter){
+  getCenterPosition(){
+    if(!this.target){ return false }
     const targetArea = this.targetArea;
     if(targetArea){
       let tRect , taRect;
@@ -102,12 +103,21 @@ class Transformer{
       }
       let x = (taRect.width-tRect.width)/2;
       let y = (taRect.height-tRect.height)/2;
-      this.target.style.setProperty('--translate-x',x+'px');
-      this.target.style.setProperty('--translate-y',y+'px');
-      this.syncGuide();
-      this.syncTool();
+      return [x,y];
     }
-
+    return null;
+  }
+  translateCenter(translateCenter){
+    const centerPosition = this.getCenterPosition()
+    if(centerPosition){
+      const x = centerPosition[0];
+      const y = centerPosition[1];
+      // this.target.style.setProperty('--translate-x',x+'px');
+      // this.target.style.setProperty('--translate-y',y+'px');
+      // this.syncGuide();
+      // this.syncTool();
+      this.translate(x,y)
+    }
   }
   translate(x,y){
     if(!this.target){return false;}
