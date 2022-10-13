@@ -63,6 +63,13 @@ class Transformer{
   get container(){
     return this._container;
   }
+  get targetBound(){
+    if(!this.target) return null;
+    let targetBound = this.target.querySelector('.tf-target-bound');
+    if(!targetBound) targetBound = this.target;
+    return targetBound;
+  }
+  
   // get box(){
   //   return this.target;
   // }
@@ -82,7 +89,7 @@ class Transformer{
   }
   syncGuide(){
     if(!this.target){ return false }
-    const rect = this.target.getBoundingClientRect();
+    const rect = this.targetBound.getBoundingClientRect();
     const guide = this.guide;
     guide.style.setProperty('top',rect.top+'px');
     guide.style.setProperty('left',rect.left+'px');
@@ -94,14 +101,19 @@ class Transformer{
   getCenterPosition(){
     if(!this.target){ return false }
     const targetArea = this.targetArea;
+    const targetBound = this.targetBound;
+    console.log(targetBound);
     if(targetArea){
       let tRect , taRect;
       taRect = targetArea.getBoundingClientRect();
-      if(this.target.getBBox ){
-        tRect = this.target.getBBox();
+      if(targetBound.getBBox ){
+        tRect = targetBound.getBBox();
       }else{
-        tRect = this.target.getBoundingClientRect();
+        tRect = targetBound.getBoundingClientRect();
       }
+      // let tWidth = (this.target.dataset.tfWidth !== undefined)?this.target.dataset.tfWidth:tRect.width;
+      // let tHeight = tRect.width;
+
       let x = (taRect.width-tRect.width)/2;
       let y = (taRect.height-tRect.height)/2;
       return [x,y];
@@ -113,23 +125,20 @@ class Transformer{
     if(centerPosition){
       const x = centerPosition[0];
       const y = centerPosition[1];
-      // this.target.style.setProperty('--translate-x',x+'px');
-      // this.target.style.setProperty('--translate-y',y+'px');
-      // this.syncGuide();
-      // this.syncTool();
       this.translate(x,y)
     }
   }
   translate(x,y){
     if(!this.target){return false;}
     const targetArea = this.targetArea;
+    const targetBound = this.targetBound;
     if(targetArea){
       let tRect , taRect;
       taRect = targetArea.getBoundingClientRect();
-      if(this.target.getBBox ){
-        tRect = this.target.getBBox();
+      if(targetBound.getBBox ){
+        tRect = targetBound.getBBox();
       }else{
-        tRect = this.target.getBoundingClientRect();
+        tRect = targetBound.getBoundingClientRect();
       }
       // ! <text>인 경우 text-anchor 로인해서 위치가 틀어진다. <text> 자체로 사용하지 말고 <g><rect><text></g> 형식으로 묶어 서라.
       // console.log(taRect.width,tRect.width)

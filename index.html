@@ -44,10 +44,16 @@
 		let tf01 = null;
 		window.addEventListener('load',(event)=>{
 			tf01  = new Transformer();
-			tf01.init(document.querySelector('#tf01'));
-			tf01.initAutoSet();
-			tf01.debug = true;
-			// tf01.target = document.querySelector('#tfTarget');
+			tf01.init(document.querySelector('#tf01')); // 이동 메뉴 UI 지정 및 초기화
+			tf01.initAutoSet(); // 대상 선택시 자동으로 동작함
+			tf01.debug = true; // 디버깅
+			// tf01.target = document.querySelector('#tfTarget'); // 기본 이동 객체
+
+			// 제한 필요시
+			// tf01.minScale = 0.2; // 20%
+			// tf01.maxScale = 3; // 300% 
+			// tf01.minRotate = -180; 
+			// tf01.maxRotate = 180;
 		})
 	</script>
 </head>
@@ -62,7 +68,7 @@
 			
 			<div class="tf-target" style="position: absolute;width:100px;height: 200px; background-color: #aaf; --rotate:0deg ">2
 			</div>
-			<div class="tf-target" style="position: absolute;width:500px;height: 300px; background-color: #fcc; --rotate:45deg; --translate-y:900px ">3
+			<div class="tf-target" style="position: absolute;width:500px;height: 300px; background-color: #fcc; --rotate:45deg; --scale-x:0.5;--scale-y:0.5; --translate-y:400px ">3
 			</div>
 			<div class="tf-target" style="position: absolute;width:200px;height: 200px; background-color: #c9f; --rotate:180deg;  ">4
 			</div>
@@ -96,36 +102,31 @@
 						<text x="0" y="20" style="font-size: 20px;">나</text>
 					</g>
 				</defs>
-				<rect  x="50" y="50" width="50" height="50" fill="red" stroke="blue" transform="rotate(-10, 50, 100)"></rect>
-				<text x="50" y="50" fill="red" stroke="blue" stroke-width="2" style="font-size:30px;font-weight:bold">테스트값</text>
-				<g id="g100">
-					<text x="0" y="0" dy="1em" fill="red" stroke="blue" alignment-baseline="text-top" stroke-width="2" style="font-size: 30px; font-weight: bold;">테스트값</text>
-				</g>
-				<use xlink:href="#g100" href="#g100" class="tf-target" >
-				</use>
-				<g id="g-asset-01" class="tf-target"> 
-					<text x="0" y="20" style="font-size: 20px;">가</text>
-				</g>
-				<use xlink:href="#g-asset-02" href="#g-asset-02" class="tf-target" style="--translate-x:100px; --translate-y:150px; --rotate:30deg">
-				</use>
-				<text dy="20" text-anchor="middle" class="tf-target" id="svg-text" style="--translate-x:100px; --translate-y:150px; --rotate:30deg" data-target-ext-tools="text-anchor">
-					<tspan >text를 선택하면 정렬이 표기됩니다.</tspan>
-					<tspan  >테스트</tspan>
-				</text>
-				<g class="tf-target"  style="--translate-x:100px; --translate-y:150px; --rotate:30deg" data-target-ext-tools="text-anchor">
-					<rect x="0" y="0" width="200px" height="40" fill="#eee"></rect>
+				<rect  x="0" y="0" width="100%" height="100%" fill="#fff" class="rect-background" ><![CDATA[ background ]]></rect>
+				<g class="tf-target" style="--translate-x:0px; --translate-y:0px; --rotate:0deg" >
+					<rect class="tf-target-bound" x="0" y="0" width="200px" height="40" fill="#ccc"></rect>
 					<text x="0" y="0" dx="1em" dy="1em" text-anchor="start" >
-						<tspan x="0" y="0" dx="1em" dy="1em"  id="svg-text-01">text를 선택하면 정렬이 표기됩니다.</tspan>
-						<tspan x="0" y="0" dx="1em" dy="2em"  id="svg-text-02">테스트</tspan>
+						<tspan x="0" y="0" dx="1em" dy="1em">.tf-target-bound 로 이동 바운딩 객체 지정 가능 </tspan>
 					</text>
 				</g>
-				<text x="20" y="35" class="small">My</text>
-				<text x="40" y="35" class="heavy">cat</text>
-				<text x="55" y="55" class="small">is</text>
-				<text x="65" y="55" class="Rrrrr">Grumpy!</text>
+
+				<g class="tf-target"  style="--translate-x:100px; --translate-y:150px; --rotate:30deg">
+					<rect x="0" y="0" width="200px" height="40" fill="#fcc"></rect>
+					<text x="0" y="0" dx="1em" dy="1em" text-anchor="start" >
+						<tspan x="0" y="0" dx="1em" dy="1em"  id="svg-text-01">회전</tspan>
+					</text>
+				</g>
+				<g class="tf-target"  style="--translate-x:0px; --translate-y:80px; --rotate:0deg" data-target-ext-tools="text-anchor">
+					<rect x="0" y="0" width="200px" height="40" fill="#ccf"></rect>
+					<text x="0" y="0" dx="1em" dy="1em" text-anchor="start" >
+						<tspan x="0" y="0" dx="1em" dy="1em"  id="svg-text-01">data-target-ext-tools="text-anchor"</tspan>
+					</text>
+				</g>
+				
 			</svg>	
 		</div>
 	</div>
+	<hr>
 
 	<div class="tf-container" id="tf01" >
 		<div class="tf-guide" >
@@ -133,9 +134,9 @@
 		</div>
 		<div class="tf-tool">
 			<div class="tf-btn-group tf-btn-group-roate">
-				<button class="tf-btn tf-btn-transform" title="회전 -15°"  data-rotate-by="-15">⟲</button>
-				<button class="tf-btn tf-btn-transform" title="회전 초기화"  data-rotate-to="0">0°</button>
-				<button class="tf-btn tf-btn-transform" title="회전 +15°"  data-rotate-by="15">⟳</button>
+				<button class="tf-btn tf-btn-transform" title="회전 -15°"  data-rotate-by="-15">⤹</button>
+				<button class="tf-btn tf-btn-transform" title="회전 초기화"  data-rotate-to="0">⟲</button>
+				<button class="tf-btn tf-btn-transform" title="회전 +15°"  data-rotate-by="15">⤸</button>
 				<button class="tf-btn tf-btn-transform" title="좌우반전"  data-rotate-y-toggle="1">◫</button>
 			</div>
 			<div class="tf-btn-group tf-btn-group-scale">
@@ -145,7 +146,7 @@
 			</div>
 			
 			<div class="tf-btn-group tf-btn-group-order">
-				<button class="tf-btn tf-btn-transform" title="리셋"  data-translate-center="1" data-scale-to="1" data-rotate-to="0">🗘</button>
+				<button class="tf-btn tf-btn-transform" title="리셋(가운데, 1;1크기, 0도)"  data-translate-center="1" data-scale-to="1" data-rotate-to="0">✛</button>
 				<!-- <button class="tf-btn tf-btn-transform" title="삭제"  data-remove="1" onclick="if(!confirm('삭제할까요?')) return false;">⦻</button> -->
 				<button class="tf-btn " title="삭제"   onclick="if(confirm('삭제할까요?')){tf01.remove();}">⨂</button>
 			</div>

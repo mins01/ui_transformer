@@ -30,6 +30,7 @@
 }
 
 .tf-container{
+  font-family: Arial, Helvetica, sans-serif	;
   --border:2px dotted #abc;
   width:0px;
   height:0px;
