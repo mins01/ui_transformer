@@ -81,7 +81,7 @@ class Transformer{
   }
   syncTool(){
     if(!this.target){ return false }
-    const rect = this.target.getBoundingClientRect();
+    const rect = this.targetBound.getBoundingClientRect();
     const tool = this.tool;
     const toolRect = this.tool.getBoundingClientRect();
     tool.style.setProperty('--top',rect.top+(rect.height)+'px');
