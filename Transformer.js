@@ -102,7 +102,7 @@ class Transformer{
     if(!this.target){ return false }
     const targetArea = this.targetArea;
     const targetBound = this.targetBound;
-    console.log(targetBound);
+    if(this.debug) console.log('getCenterPosition',targetBound);
     if(targetArea){
       let tRect , taRect;
       taRect = targetArea.getBoundingClientRect();
@@ -209,7 +209,7 @@ class Transformer{
   order(order){
     if(!this.target){return false;}
     const target = this.target;
-    console.log(order);
+    if(this.debug) console.log('order',order);
     if(order < 0){
       let next = target.nextElementSibling;
       while(next && !next.classList.contains('tf-target')){
