@@ -260,22 +260,24 @@ class Transformer{
       this.syncGuide();
     });
     window.addEventListener('touchstart',(event)=> {
-      if(this.pointerTarget){ this.stopevent(event); return false; }
+      if(this.pointerTarget){ event.preventDefault();  return false; }
     }, {passive:false});
 
     // translate
-    document.onpointerdown = (event)=>{ 
+    document.addEventListener('pointerdown', (event)=>{ 
       const el = event.target.closest('.tf-target');
-      if(!this.target || this.target != el){return;}
-      
-      this.stopevent(event);
+      // if(!this.target || this.target != el){return;}
+      if(!el){return;}
+      this.target = el;
+      event.preventDefault();
+      // this.stopevent(event);
       this.pointerTarget = el;
       this._tx = parseInt(getComputedStyle(this.target).getPropertyValue('--translate-x'));
       this._ty = parseInt(getComputedStyle(this.target).getPropertyValue('--translate-y'));
       this._x0 = event.x;
       this._y0 = event.y;
       return false;
-    };
+    });
 
     //---
     this.container.querySelectorAll('.tf-btn-transform').forEach(element => {
@@ -320,12 +322,12 @@ class Transformer{
     document.addEventListener('click', (event)=>{ 
       const el = event.target.closest('.tf-target');
       if(!el){
-
         this.target = null;
         return;
       }
-      console.log('click')
+      // console.log('click')
       this.target = el;
+      this.pointerTarget = el;
     });
   }
 
