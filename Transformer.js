@@ -246,14 +246,13 @@ class Transformer{
     });
 
     document.addEventListener('pointerup',(event)=>{ 
-      this.pointerTarget = null;
-      console.log('pointerup',this.pointerTarget);
+      if(this.pointerTarget) this.pointerTarget = null;
+      if(this.debug) console.log('pointerup',this.pointerTarget);
       this.syncGuide();
     });
 
     document.addEventListener('pointermove', (event)=>{ 
       if(!this.pointerTarget){ return false; }
-      console.log('pointermove2222222',this);
 
       this.stopevent(event);
       let x = event.x - this._x0;
@@ -263,17 +262,17 @@ class Transformer{
       this.syncGuide();
     });
     window.addEventListener('touchstart',(event)=> {
-      if(this.target){ event.preventDefault();  return false; }
+      const el = event.target.closest('.tf-target');
+      if(el){ event.preventDefault();  return false; }
     }, {passive:false});
 
     // translate
     document.addEventListener('pointerdown', (event)=>{ 
       const el = event.target.closest('.tf-target');
-      // if(!this.target || this.target != el){return;}
+      if(this.debug) console.log('pointerup',event);
       if(!el){return;}
-      this.target = el;
-      // event.preventDefault();
       this.stopevent(event);
+      this.target = el;
       this.pointerTarget = el;
       this._tx = parseInt(getComputedStyle(this.target).getPropertyValue('--translate-x'));
       this._ty = parseInt(getComputedStyle(this.target).getPropertyValue('--translate-y'));
@@ -323,11 +322,13 @@ class Transformer{
 
   initAutoSet(){
     document.addEventListener('click', (event)=>{ 
+      if(this.debug) console.log('document.click');
       const el = event.target.closest('.tf-target');
-      if(!el){
+      if(!el && this.target){
         this.target = null;
-        return;
+        this.pointerTarget = null;
       }
+
     });
   }
 
