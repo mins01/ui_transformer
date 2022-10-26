@@ -247,11 +247,14 @@ class Transformer{
 
     document.addEventListener('pointerup',(event)=>{ 
       this.pointerTarget = null;
+      console.log('pointerup',this.pointerTarget);
       this.syncGuide();
     });
 
     document.addEventListener('pointermove', (event)=>{ 
       if(!this.pointerTarget){ return false; }
+      console.log('pointermove2222222',this);
+
       this.stopevent(event);
       let x = event.x - this._x0;
       let y = event.y - this._y0;
@@ -260,7 +263,7 @@ class Transformer{
       this.syncGuide();
     });
     window.addEventListener('touchstart',(event)=> {
-      if(this.pointerTarget){ event.preventDefault();  return false; }
+      if(this.target){ event.preventDefault();  return false; }
     }, {passive:false});
 
     // translate
@@ -269,8 +272,8 @@ class Transformer{
       // if(!this.target || this.target != el){return;}
       if(!el){return;}
       this.target = el;
-      event.preventDefault();
-      // this.stopevent(event);
+      // event.preventDefault();
+      this.stopevent(event);
       this.pointerTarget = el;
       this._tx = parseInt(getComputedStyle(this.target).getPropertyValue('--translate-x'));
       this._ty = parseInt(getComputedStyle(this.target).getPropertyValue('--translate-y'));
@@ -325,9 +328,6 @@ class Transformer{
         this.target = null;
         return;
       }
-      // console.log('click')
-      this.target = el;
-      this.pointerTarget = el;
     });
   }
 
