@@ -81,52 +81,46 @@ class Transformer{
   }
   syncTool(){
     if(!this.target){ return false }
-    const rect = this.targetBound.getBoundingClientRect();
+    // const rect = this.targetBound.getBoundingClientRect();
+    const rect = this.getBoundingClientRectForTargetBound(this.targetBound);
     const tool = this.tool;
     const toolRect = this.tool.getBoundingClientRect();
     tool.style.setProperty('--top',rect.top+(rect.height)+'px');
     tool.style.setProperty('--left',rect.left+(rect.width-toolRect.width)/2+'px');
   }
-  syncGuide(){
-    if(!this.syncGuideAsStyle()){
-      this.syncGuideAsBoundingClientRect()
-    }
-  }
-  syncGuideAsBoundingClientRect(){
-    if(!this.target){ return false }
-    const rect = this.targetBound.getBoundingClientRect();
-    const guide = this.guide;
-    guide.style.setProperty('top',rect.top+'px');
-    guide.style.setProperty('left',rect.left+'px');
-    guide.style.setProperty('width',rect.width+'px');
-    guide.style.setProperty('height',rect.height+'px');
-    return true;
-  }
-  syncGuideAsStyle(){
-    if(!this.target){ return false }
+  getBoundingClientRectForTargetBound(targetBound){
+    if(!targetBound) return null;
+    let w = parseFloat(targetBound.style.getPropertyValue('--w'));
+    let h = parseFloat(targetBound.style.getPropertyValue('--h'));
+    if(!w || !h){ return targetBound.getBoundingClientRect(); }
 
-    let w = parseFloat(this.targetBound.style.getPropertyValue('--w'));
-    let h = parseFloat(this.targetBound.style.getPropertyValue('--h'));
-    if(!w || !w){ return false; }
-    const rectP = this.targetBound.parentNode.getBoundingClientRect();
-    let scaleX = parseFloat(this.targetBound.style.getPropertyValue('--scale-x')??1);
-    let scaleY = parseFloat(this.targetBound.style.getPropertyValue('--scale-y')??1);
+    const rectP = targetBound.parentNode.getBoundingClientRect();
+    let scaleX = parseFloat(targetBound.style.getPropertyValue('--scale-x')??1);
+    let scaleY = parseFloat(targetBound.style.getPropertyValue('--scale-y')??1);
     if(isNaN(scaleX)) scaleX = 1
     if(isNaN(scaleY)) scaleY = 1
     let newW = w*scaleX
     let newH = h*scaleY
 
-    let translateX = parseFloat(this.targetBound.style.getPropertyValue('--translate-x')??0);
-    let translateY = parseFloat(this.targetBound.style.getPropertyValue('--translate-y')??0); 
+    let translateX = parseFloat(targetBound.style.getPropertyValue('--translate-x')??0);
+    let translateY = parseFloat(targetBound.style.getPropertyValue('--translate-y')??0); 
+    if(isNaN(translateX)) translateX = 1
+    if(isNaN(translateY)) translateY = 1
 
     let left = rectP.left + translateX
     let top = rectP.top  + translateY
+
+    return new DOMRect(left, top, newW, newH);
+  }
+  syncGuide(){
+    const rect = this.getBoundingClientRectForTargetBound(this.targetBound);
+    if(!rect) return;
     const guide = this.guide;
-    guide.style.setProperty('width',newW+'px');
-    guide.style.setProperty('height',newH+'px');
-    guide.style.setProperty('top',top+'px');
-    guide.style.setProperty('left',left+'px');
-    return true;
+    guide.style.setProperty('top',rect.top+'px');
+    guide.style.setProperty('left',rect.left+'px');
+    guide.style.setProperty('width',rect.width+'px');
+    guide.style.setProperty('height',rect.height+'px');
+
   }
   getCenterPosition(){
     if(!this.target){ return false }
